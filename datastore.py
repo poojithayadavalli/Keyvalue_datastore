@@ -38,7 +38,9 @@ def read(key):
                 stri=str(key)+":"+str(b[0]) #to return the value in the format of JsonObject i.e.,"key_name:value"
                 return stri
             else:
-                print("Error: time-to-live of",key,"has expired") #error
+                #print(time.time(),b[1])
+                print("Error: time-to-live of",key,"has expired")#error
+                del d[key]
         else:
             stri=str(key)+":"+str(b[0])
             return stri
