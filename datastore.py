@@ -1,23 +1,23 @@
 import time
 
-d={}
-#'d' is the dictionary in which we store data
+dic={}
+#'dic' is the dictionary in which we store data
 
 #for create operation 
-#use syntax "create(key_name,value,timeout_value)" timeout is optional you can proceed by passing two arguments without timeout
+#syntax "create(key_name,value,timeout_value)" timeout is optional you can proceed by passing two arguments without timeout
 
 def create(key,value,timeout=0):
-    if key in d:
+    if key in dic:
         print("Error: this key already exists") #error
     else:
         if(key.isalpha()):
-            if len(d)<(1024*1024*1024) and value<=(16*1024*1024): #constraints for file size less than 1GB and Json object value less than 16KB 
+            if len(dic)<(1024*1024*1024) and value<=(16*1024*1024): #constraints for file size less than 1GB and Json object value less than 16KB 
                 if timeout==0:
-                    l=[value,timeout]
+                    val=[value,timeout]
                 else:
-                    l=[value,time.time()+timeout]
+                    val=[value,time.time()+timeout]
                 if len(key)<=32: #constraints for input key_name capped at 32chars
-                    d[key]=l
+                    dic[key]=val
                 else:
                     print("Error: Key length should not exceed 32characters")#error
             else:
@@ -26,36 +26,36 @@ def create(key,value,timeout=0):
             print("Error: Invalind key_name!! key_name must contain only alphabets and no special characters or numbers")#error message3
 
 #for read operation
-#use syntax "read(key_name)"
+# syntax "read(key_name)"
             
 def read(key):
-    if key not in d:
+    if key not in dic:
         print("Error: key does not exist in datastore. Please enter a valid key") #error
     else:
-        b=d[key]
-        if b[1]!=0:
-            if time.time()<b[1]: #comparing the present time with expiry time
-                stri=str(key)+":"+str(b[0]) #to return the value in the format of JsonObject i.e.,"key_name:value"
-                return stri
+        temp=dic[key]
+        if temp[1]!=0:
+            if time.time()<temp[1]: #comparing the present time with expiry time
+                st=str(key)+":"+str(temp[0]) #to return the value in the format of JsonObject i.e.,"key_name:value"
+                return st
             else:
-                #print(time.time(),b[1])
+                #print(time.time(),temp[1])
                 print("Error: time-to-live of",key,"has expired")#error
-                del d[key]
+                del dic[key]
         else:
-            stri=str(key)+":"+str(b[0])
-            return stri
+            st=str(key)+":"+str(temp[0])
+            return st
 
 #for delete operation
-#use syntax "delete(key_name)"
+#syntax "delete(key_name)"
 
 def delete(key):
-    if key not in d:
+    if key not in dic:
         print("Error: key does not exist in datastore. Please enter a valid key") #error
     else:
-        b=d[key]
-        if b[1]!=0:
-            if time.time()<b[1]: #comparing the current time with expiry time
-                del d[key]
+        b=dic[key]
+        if temp[1]!=0:
+            if time.time()<temp[1]: #comparing the current time with expiry time
+                del dic[key]
                 print("key is successfully deleted")
             else:
                 print("Error: time-to-live of",key,"has expired") #error
