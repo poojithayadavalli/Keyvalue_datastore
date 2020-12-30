@@ -52,7 +52,7 @@ def delete(key):
     if key not in dic:
         print("Error: key does not exist in datastore. Please enter a valid key") #error
     else:
-        b=dic[key]
+        temp=dic[key]
         if temp[1]!=0:
             if time.time()<temp[1]: #comparing the current time with expiry time
                 del dic[key]
@@ -60,7 +60,7 @@ def delete(key):
             else:
                 print("Error: time-to-live of",key,"has expired") #error
         else:
-            del d[key]
+            del dic[key]
             print("key is successfully deleted")
 
 
